@@ -24,3 +24,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01303, 0)
 shape = SubResource("CapsuleShape3D_qi2p4")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="PathUpdateTimer" type="Timer" parent="."]

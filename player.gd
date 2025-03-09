@@ -5,6 +5,7 @@ extends CharacterBody3D
 @onready var hud = $"../AmmoCount"
 @onready var raycast = $Camera3D/RayCast3D
 @onready var body = $CollisionShape3D
+@onready var hit_box = $HitBox
 
 @export var ammo_count : int=4
 @export var ammo_max : int = 30 
@@ -13,17 +14,23 @@ extends CharacterBody3D
 #@onready var muzzle = $Muzzle
 @onready var audio_player = $ShootSound
 @export var player_healh: int = 1
-#@export var player_armor= $
+@export var speed = 8
+@export var jump_velocity = 10
+@export var player_armor= 4
 
 var can_shoot:bool = true
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-const SPEED = 8.0
-const JUMP_VELOCITY = 7
+
+
 signal hit
 
 func _ready():
-	pass
-
+	hit_box.body_entered.connect(_on_hit_box_body_entered)
+	
+func _on_hit_box_body_entered(body: Node3D) -> void:
+	print("in Player collision")
+	if body.is_in_group("Enemy"):
+		die()
 func _unhandled_input(event):
 	#if Input.is_action_just_pressed("run") :
 	#	speed = run_speed
@@ -35,22 +42,21 @@ func _unhandled_input(event):
 		camera.rotation.x= clamp(camera.rotation.x, -PI/2, PI/2)
 		
 func _physics_process(delta) :
-	check_collision()
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	# Handle jump.and is_on_floor()
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+		velocity.y = jump_velocity
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("left", "right", "up", "down")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		velocity.x = direction.x * speed
+		velocity.z = direction.z * speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, speed)
+		velocity.z = move_toward(velocity.z, 0, speed)
 	move_and_slide()
 	
 #shoot func==>
@@ -94,17 +100,10 @@ func recive_dmg():
 	print("-1hp player")
 	if player_healh<=0:
 		player_healh
-		print("palayer dead")
+		print("player dead")
 		position = Vector3.ZERO
 		
-func check_collision():
-	var collision = move_and_collide(Vector3.ZERO)
-	print("get collider")
-	if collision:
-		var body = collision.get_collider()
-		if body.is_in_group("Enemy"):
-			die()
-			return
 func die():
+	print("Player Dead")
 	get_tree().reload_current_scene()
 		
