@@ -55,7 +55,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.15893, 0.179279, -3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8849, 0.179279, -3)
 
 [node name="AmmoPickUp6" parent="." instance=ExtResource("3_tlwt5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.32025, 0.179279, -3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.01744, 0.179279, -3)
 
 [node name="AmmoPickUp7" parent="." instance=ExtResource("3_tlwt5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.194486, 0.179279, -3)
