@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://7c8uv1c64ckt"]
+
+[ext_resource type="Script" uid="uid://q1siyoomrjhg" path="res://ammo_count.gd" id="1_k5de2"]
+
+[node name="HUD" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_k5de2")
+
+[node name="Label" type="Label" parent="."]
+process_mode = 3
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 11.164
+anchor_bottom = 6.845
+offset_left = 917.0
+offset_top = 433.0
+offset_right = 603.44
+offset_bottom = 202.2

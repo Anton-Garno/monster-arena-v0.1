@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://bchwhn1hdbhei"]
+
+[ext_resource type="Script" uid="uid://62hou5mo4hsf" path="res://player.gd" id="1_ynfyx"]
+[ext_resource type="PackedScene" uid="uid://du08j5rnd0pja" path="res://gun.tscn" id="2_kpjcp"]
+[ext_resource type="Texture2D" uid="uid://dlx67dms3ymwk" path="res://texture/Ziel.png" id="3_kne1u"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xhfnw"]
+size = Vector3(1.3, 2, 1.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0ppj"]
+albedo_color = Color(1, 0.501961, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_c7016"]
+material = SubResource("StandardMaterial3D_f0ppj")
+
+[node name="player" type="CharacterBody3D" groups=["Player"]]
+wall_min_slide_angle = 0.698132
+script = ExtResource("1_ynfyx")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000691876, 1.64645, -0.00457966)
+fov = 83.125
+
+[node name="Gun" parent="Camera3D" instance=ExtResource("2_kpjcp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.145672, -0.580948, -0.44891)
+
+[node name="TextureRect" type="TextureRect" parent="Camera3D"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -14.0
+offset_top = -13.0
+offset_right = 498.0
+offset_bottom = 499.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.0586776, 0.0584415)
+texture = ExtResource("3_kne1u")
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999883, 0.0152885, 0, -0.0152885, 0.999883, 0, 0, 0)
+target_position = Vector3(0, 0, -10)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02527, 0)
+shape = SubResource("BoxShape3D_xhfnw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CollisionShape3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00231004, 0)
+mesh = SubResource("CapsuleMesh_c7016")
+skeleton = NodePath("../..")

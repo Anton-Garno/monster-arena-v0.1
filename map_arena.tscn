@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://wxhqecvpc2qo"]
+
+[ext_resource type="PackedScene" uid="uid://bbu5bp4ydrd3x" path="res://map fbx/Map Arena v1.glb" id="1_doj5r"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8x2id"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Map Arena v1" parent="." instance=ExtResource("1_doj5r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.21403, 0, -0.910311)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(107.696, 0, 0, 0, -1.08452, 0, 0, 0, 66.4485, 0, 0, 0)
+shape = SubResource("BoxShape3D_8x2id")

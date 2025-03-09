@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://canfq7r4f41yl"]
+
+[ext_resource type="Script" uid="uid://c20oylltfk2df" path="res://ammo_pick_up.gd" id="1_0xlo4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4dfn"]
+albedo_color = Color(0.312403, 0.532602, 0.424511, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xlo4"]
+material = SubResource("StandardMaterial3D_g4dfn")
+size = Vector3(0.35, 0.365, 0.395)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_c27nw"]
+size = Vector3(0.396619, 0.369653, 0.436682)
+
+[node name="AmmoPickUp" type="Node3D"]
+script = ExtResource("1_0xlo4")
+ammo_amount = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, -0.00502777, 0.0103406, -0.0224934)
+mesh = SubResource("BoxMesh_0xlo4")
+skeleton = NodePath("")
+
+[node name="Area3D" type="Area3D" parent="." groups=["Player"]]
+transform = Transform3D(1, 0, -6.3573e-08, 0, 1, 0, 6.3573e-08, 0, 1, 0.014, 0.207, -0.057)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, -2.13163e-14, 0, 1, 0, 2.13163e-14, 0, 1, -0.0260731, -0.196538, 0.0213813)
+shape = SubResource("BoxShape3D_c27nw")

@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6rx7vgl1kjb2"]
+
+[ext_resource type="Script" uid="uid://q1siyoomrjhg" path="res://ammo_count.gd" id="1_7ov5r"]
+
+[node name="AmmoCount" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_7ov5r")
+
+[node name="AmmoLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1021.0
+offset_top = 561.0
+offset_right = 1104.0
+offset_bottom = 594.0
+text = "Ammo:"
+vertical_alignment = 1

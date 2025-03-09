@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddwgqjchl182k"]
+
+[ext_resource type="Script" uid="uid://lf13qw3k3dsi" path="res://resume.gd" id="1_kgtcx"]
+
+[node name="ResumeSignal" type="Node3D"]
+script = ExtResource("1_kgtcx")
