@@ -22,7 +22,6 @@ func _physics_process(delta: float) -> void:
 	
 func set_target(target_position:Vector3):
 	nav_agent.set_target_position(target_position)
-	#nav_agent.force_update()
 	print("next target pos ", nav_agent.get_next_path_position())
 func follow_path(delta):
 	#print("next target pos ", nav_agent.get_next_path_position())

@@ -4,23 +4,26 @@ extends CharacterBody3D
 @onready var pause_menu =$"../Menu/PauseMenu"
 @onready var hud = $"../AmmoCount"
 @onready var raycast = $Camera3D/RayCast3D
+
 @onready var body = $CollisionShape3D
 @onready var hit_box = $HitBox
+@onready var shot_anim =$Camera3D/shotgun/AnimationPlayer
+@onready var bullets_holes= preload("res://bullets_holes.tscn") 
 
 @export var ammo_count : int=4
 @export var ammo_max : int = 30 
-@export var fire_rate : float = 0.5 #chastota postriliv
+@export var fire_rate : float = 1 #chastota postriliv
 
 #@onready var muzzle = $Muzzle
 @onready var audio_player = $ShootSound
 @export var player_healh: int = 1
-@export var speed = 8
-@export var jump_velocity = 10
+@export var speed = 10
+@export var jump_velocity = 8
 @export var player_armor= 4
 
 var can_shoot:bool = true
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-
+var is_reloading = false
 
 signal hit
 
@@ -28,7 +31,7 @@ func _ready():
 	hit_box.body_entered.connect(_on_hit_box_body_entered)
 	
 func _on_hit_box_body_entered(body: Node3D) -> void:
-	print("in Player collision")
+	#print("in Player collision")
 	if body.is_in_group("Enemy"):
 		die()
 func _unhandled_input(event):
@@ -42,6 +45,11 @@ func _unhandled_input(event):
 		camera.rotation.x= clamp(camera.rotation.x, -PI/2, PI/2)
 		
 func _physics_process(delta) :
+	#if Input.is_action_pressed("shoot"):
+		#var b = bullets_holes.instantiate()
+		#raycast.get_collider().add_child(b)
+		#b.global_transform.origin = raycast.get_collision_point()
+		#b.look_at(raycast.get_collision_point()+raycast.get_collision_normal(),Vector3.UP)
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	# Handle jump.and is_on_floor()
@@ -64,7 +72,8 @@ func _physics_process(delta) :
 func _input(event: InputEvent) -> void:
 	if Input.is_action_pressed("shoot") and can_shoot:
 		shoot()
-		
+	if Input.is_action_pressed("reload"):
+		reload()
 func shoot():
 	if ammo_count <=0:
 		print("No Ammo")
@@ -72,10 +81,16 @@ func shoot():
 	ammo_count -=1
 	print("Ammo:", ammo_count)
 	update_hud()
-	if audio_player:
+	
+			#shot_anim.queue("reload barAction", "reload_gun", "reloaderAction")
+	if audio_player:#need to create an sound of shot
 		audio_player.play()
+	
 	can_shoot = false
+	shot_anim.play("shot")
+	shot_anim.queue("reloaderAction")
 	await get_tree().create_timer(fire_rate).timeout
+	
 	can_shoot= true
 	
 	if raycast.is_colliding():
@@ -85,6 +100,22 @@ func shoot():
 			target.take_dmg(1)
 			print("-1hp enemy")
 		
+func reload():
+	if is_reloading or ammo_count == ammo_max:
+		return
+	is_reloading = true
+	can_shoot = false
+	
+	shot_anim.play("reload_gun")
+	#shot_anim.play("reloaderAction")
+	
+	var reload_time = shot_anim.current_animation_length
+	await get_tree().create_timer(reload_time).timeout
+	
+	#ammo_count = ammo_max
+	print("reloaded!")
+	is_reloading = false
+	can_shoot= true
 	
 func add_ammo(amount:int):
 	ammo_count =min(ammo_count + amount, ammo_max)
