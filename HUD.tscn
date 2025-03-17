@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://7c8uv1c64ckt"]
+[gd_scene load_steps=2 format=3 uid="uid://bsgcnsea2t4fa"]
 
-[ext_resource type="Script" uid="uid://q1siyoomrjhg" path="res://Scripts/ammo_count.gd" id="1_k5de2"]
+[ext_resource type="Script" path="res://ammo_count.gd" id="1_k5de2"]
 
 [node name="HUD" type="Control"]
 process_mode = 3

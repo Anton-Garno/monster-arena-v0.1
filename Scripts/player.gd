@@ -24,27 +24,29 @@ extends CharacterBody3D
 var can_shoot:bool = true
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_reloading = false
-
-signal hit
+#this is sooooo many of VAR and many of them is @onready fron another scenes
+signal hit#not working(now)
 
 func _ready():
-	hit_box.body_entered.connect(_on_hit_box_body_entered)
+	hit_box.body_entered.connect(_on_hit_box_body_entered)#func maked for ammo pickup or smtg like this
 	
-func _on_hit_box_body_entered(body: Node3D) -> void:
-	#print("in Player collision")
+func _on_hit_box_body_entered(body: Node3D) -> void:#die func if you collide wthis group Enemy
+	#print("in Player collision")#checker
 	if body.is_in_group("Enemy"):
 		die()
-func _unhandled_input(event):
+func _unhandled_input(event):#hier we have many keys input func and simple player control
+	#run func but you nead new var for todo this, leave so and get down
 	#if Input.is_action_just_pressed("run") :
 	#	speed = run_speed
 	#else:
 	#	speed= walk_speed
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion:#camera rotation
 		rotate_y(-event.relative.x*.005)
 		camera.rotate_x(-event.relative.y*.005)
 		camera.rotation.x= clamp(camera.rotation.x, -PI/2, PI/2)
 		
 func _physics_process(delta) :
+	#under line is code for bullets holes,this time is not working(17.03)
 	#if Input.is_action_pressed("shoot"):
 		#var b = bullets_holes.instantiate()
 		#raycast.get_collider().add_child(b)
@@ -65,7 +67,7 @@ func _physics_process(delta) :
 	else:
 		velocity.x = move_toward(velocity.x, 0, speed)
 		velocity.z = move_toward(velocity.z, 0, speed)
-	move_and_slide()
+	move_and_slide()#potujna func for check player collision while walking
 	
 #shoot func==>
 
@@ -82,36 +84,34 @@ func shoot():
 	print("Ammo:", ammo_count)
 	update_hud()
 	
-			#shot_anim.queue("reload barAction", "reload_gun", "reloaderAction")
+	
 	if audio_player:#need to create an sound of shot
 		audio_player.play()
 	
-	can_shoot = false
-	shot_anim.play("shot")
+	can_shoot = false#after shooting check timer before make a new shot
+	
+	shot_anim.play("shot")#play animation
 	shot_anim.queue("reloaderAction")
-	await get_tree().create_timer(fire_rate).timeout
+	await get_tree().create_timer(fire_rate).timeout#timer
 	
-	can_shoot= true
+	can_shoot= true#can shooting
 	
-	if raycast.is_colliding():
+	if raycast.is_colliding():#our method for shooting through the collider
 		var target  = raycast.get_collider()
 		print("hit enemy")
 		if  target.has_method("take_dmg"):
 			target.take_dmg(1)
 			print("-1hp enemy")
 		
-func reload():
+func reload():#this func working but we doest need he
 	if is_reloading or ammo_count == ammo_max:
 		return
 	is_reloading = true
 	can_shoot = false
-	
 	shot_anim.play("reload_gun")
 	#shot_anim.play("reloaderAction")
-	
 	var reload_time = shot_anim.current_animation_length
 	await get_tree().create_timer(reload_time).timeout
-	
 	#ammo_count = ammo_max
 	print("reloaded!")
 	is_reloading = false
